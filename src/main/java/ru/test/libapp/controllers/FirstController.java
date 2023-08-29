@@ -24,4 +24,17 @@ public class FirstController {
     public String goodbyePage() {
         return "first/goodbye";
     }
+
+    @GetMapping("/calculator")
+    public String calculator(@RequestParam(value = "operation", required = false) String operation,
+                             @RequestParam(value = "first", required = false) int first,
+                             @RequestParam(value = "second", required = false) int second,
+                             Model model) {
+        String result = String.valueOf(first + second);
+        if (operation.equals("sum")) {
+            model.addAttribute("message", "result of " + operation + " = " + result);
+
+        }
+        return "/first/calculator";
+    }
 }
