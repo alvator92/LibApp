@@ -1,6 +1,7 @@
 package ru.test.libapp.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import ru.test.libapp.models.Person;
@@ -21,7 +22,7 @@ public class PersonDao {
     private static int PEOPLE_COUNT;
 
     public List<Person> index() {
-        return jdbcTemplate.query("SELECT * FROM Person", new PersonMapper());
+        return jdbcTemplate.query("SELECT * FROM Person", new BeanPropertyRowMapper<>(Person.class));
     }
 
     // []
