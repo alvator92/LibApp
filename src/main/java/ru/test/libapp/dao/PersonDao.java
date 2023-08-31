@@ -10,6 +10,7 @@ import ru.test.libapp.models.Person;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class PersonDao {
@@ -30,6 +31,11 @@ public class PersonDao {
     public Person show(int id) {
         return jdbcTemplate.query("SELECT * FROM PERSON WHERE id = ?", new Object[]{id}, new PersonMapper())
                 .stream().findAny().orElse(null);
+    }
+
+    public Optional<Person> show(String email) {
+        return jdbcTemplate.query("Select * from PERSON where email = ?", new Object[]{email},
+                new BeanPropertyRowMapper<>(Person.class)).stream().findAny();
     }
 
     public void save(Person person) {
