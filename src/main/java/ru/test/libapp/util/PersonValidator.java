@@ -5,7 +5,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 import ru.test.libapp.dao.PersonDAO;
-import ru.test.libapp.dao.PersonDao;
 import ru.test.libapp.models.Person;
 
 @Component
@@ -28,7 +27,7 @@ public class PersonValidator implements Validator {
 
         // посмотерть есть ли такой же человек в БД
             if(personDao.show(person.getName()).isPresent()) {
-                errors.rejectValue("email", "", "This email already taken");
+                errors.rejectValue("name", "", "Такое имя уже есть в Базе");
             }
     }
 }
