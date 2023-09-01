@@ -3,32 +3,23 @@ package ru.test.libapp.models;
 import javax.validation.constraints.*;
 
 public class Person {
+
     private int id;
-    @NotEmpty(message = "Name should not be Empty")
-    @Size(min = 2, max = 30, message = "Name should be beetween 2 to 30 characters")
+
+    @NotEmpty(message = "Поле не может быть пустым")
+    @Size(min = 2, max = 30, message = "Некорректная длина имени")
     private String name;
-    @Min(value = 0, message = "Age should be greater than 0")
+
+    @Min(value = 0, message = "Возраст не может быть меньше 1")
     private int age;
-    @NotEmpty(message = "Email should not be empty")
-    @Email(message = "Email should be valid")
-    private String email;
 
-    // Страна, Город, индекс (6 цифр)
-    // Russia, Moscow, 123456
-    @Pattern(regexp = "[A-Z]\\w+, [A-Z]\\w+, \\d{6}", message = "Your adress should be in this formatt - Russia, Moscow, 123456")
-    private String address;
-
-    public Person() {
-
-    }
-
-    public Person(int id, String name, int age, String email, String address) {
+    public Person(int id, String name, int age) {
         this.id = id;
         this.name = name;
         this.age = age;
-        this.email = email;
-        this.address = address;
     }
+
+    public Person() {}
 
     public int getId() {
         return id;
@@ -52,21 +43,5 @@ public class Person {
 
     public void setAge(int age) {
         this.age = age;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
     }
 }
