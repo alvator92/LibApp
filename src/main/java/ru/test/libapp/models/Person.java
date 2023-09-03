@@ -7,16 +7,16 @@ public class Person {
     private int id;
 
     @NotEmpty(message = "Поле не может быть пустым")
-    @Size(min = 2, max = 30, message = "Некорректная длина имени")
-    private String name;
+    @Size(min = 2, max = 100, message = "Некорректная длина имени")
+    private String fullName;
 
     @Min(value = 0, message = "Возраст не может быть меньше 1")
-    private int age;
+    private int yearOfBirth;
 
     public Person(int id, String name, int age) {
         this.id = id;
-        this.name = name;
-        this.age = age;
+        this.fullName = name;
+        this.yearOfBirth = age;
     }
 
     public Person() {}
@@ -29,19 +29,19 @@ public class Person {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
-    public int getAge() {
-        return age;
+    public int getYearOfBirth() {
+        return yearOfBirth;
     }
 
-    public void setAge(int age) {
-        this.age = age;
+    public void setYearOfBirth(int yearOfBirth) {
+        this.yearOfBirth = yearOfBirth;
     }
 }

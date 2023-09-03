@@ -5,24 +5,21 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
 public class Book {
-    private int book_id;
-    private int person_id;
-
+    private int id;
     @NotEmpty(message = "У книги должно быть название")
-    @Size(min = 2, max = 30, message = "Название должно быть в пределах от 2 до 30 символов")
-    private String book;
+    @Size(min = 2, max = 100, message = "Название должно быть в пределах от 2 до 100 символов")
+    private String title;
 
     @NotEmpty(message = "У книги Должен быть автор")
-    @Size(min = 2, max = 30, message = "Имя автора должно быть")
+    @Size(min = 2, max = 100, message = "Имя автора должно быть")
     private String author;
 
-    @Min(value = 1900)
-    private String age;
+    @Min(value = 1500)
+    private int age;
 
-    public Book(int book_id, int person_id, String book, String author, String age) {
-        this.book_id = book_id;
-        this.person_id = person_id;
-        this.book = book;
+    public Book(int book_id, String book, String author, int age) {
+        this.id = book_id;
+        this.title = book;
         this.author = author;
         this.age = age;
     }
@@ -30,35 +27,27 @@ public class Book {
     public Book() {
     }
 
-    public int getBook_id() {
-        return book_id;
+    public int getId() {
+        return id;
     }
 
-    public void setBook_id(int book_id) {
-        this.book_id = book_id;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public int getPerson_id() {
-        return person_id;
+    public String getTitle() {
+        return title;
     }
 
-    public void setPerson_id(int person_id) {
-        this.person_id = person_id;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public String getBook() {
-        return book;
-    }
-
-    public void setBook(String book) {
-        this.book = book;
-    }
-
-    public String getAge() {
+    public int getAge() {
         return age;
     }
 
-    public void setAge(String age) {
+    public void setAge(int age) {
         this.age = age;
     }
 

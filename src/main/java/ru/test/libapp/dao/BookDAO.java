@@ -5,6 +5,7 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import ru.test.libapp.models.Book;
+import ru.test.libapp.models.BookRowMapper;
 
 import java.util.List;
 
@@ -17,12 +18,17 @@ public class BookDAO {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public List<Book> show() {
-        return jdbcTemplate.query("SELECT * FROM BOOK", new BeanPropertyRowMapper<>(Book.class));
+    public List<Book> index() {
+        return jdbcTemplate.query("SELECT * FROM BOOK", new BookRowMapper());
     }
 
     public Book show(int id) {
-        return jdbcTemplate.query("SELECT * FROM Book where book_id=?", new Object[]{id},
-                new BeanPropertyRowMapper<>(Book.class)).stream().findAny().orElse(null);
+            return jdbcTemplate.query("SELECT * FROM Book where book_id=?", new Object[]{id},
+                new BookRowMapper()).stream().findAny().orElse(null);
+    }
+
+    public void create(Book book) {
+        jdbcTemplate.update("INSERT INTO BOOK (book, author, age) VALUES (?,?,?)",
+                book.getTitle(), book.getAuthor(), book.getAge());
     }
 }
