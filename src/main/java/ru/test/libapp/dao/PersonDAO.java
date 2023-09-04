@@ -3,6 +3,8 @@ package ru.test.libapp.dao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
+import ru.test.libapp.models.Book;
+import ru.test.libapp.models.BookRowMapper;
 import ru.test.libapp.models.Person;
 import ru.test.libapp.models.PersonRowMapper;
 
@@ -46,5 +48,10 @@ public class PersonDAO {
 
     public void deletePerson(int id) {
         jdbcTemplate.update("DELETE FROM PERSON WHERE person_id=?", id);
+    }
+
+    public List<Book> getBooksByPersonId(int id) {
+        return jdbcTemplate.query("SELECT * FROM BOOK WHERE person_id = ?", new Object[]{id},
+                new BookRowMapper());
     }
 }

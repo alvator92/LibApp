@@ -7,9 +7,12 @@
 <body>
 <p th:text="${book.getTitle() + ', '+ book.getAuthor() + ', ' + book.getAge()}">VALUE</p>
 <p th:text="${book.getId()}">VALUE</p>
+<br/>
 
-<a th:href="@{/books/{id}/edit(id=${book.getId()})}">Edit</a>
-
+<form th:action="@{/books/{id}/edit(id=${book.getId()})}">
+    <input type="submit" value="Edit"/>
+</form>
+<br/>
 <form th:method="DELETE" th:action="@{/books/{id}(id=${book.getId()})}">
     <input type="submit" value="Delete"/>
 </form>
