@@ -6,7 +6,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.test.libapp.dao.PersonDAO;
-import ru.test.libapp.models.Book;
 import ru.test.libapp.models.Person;
 import ru.test.libapp.util.PersonValidator;
 

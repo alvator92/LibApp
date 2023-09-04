@@ -49,4 +49,12 @@ public class BookDAO {
                 "join person p on b.person_id = p.person_id " +
                 "where b.book_id = ?", new Object[]{id}, new PersonRowMapper()).stream().findAny();
     }
+
+    public void release(int id) {
+        jdbcTemplate.update("UPDATE BOOK SET person_id=NULL WHERE book_id=?", id);
+    }
+
+    public void assign(int id, Person selectedPerson) {
+        jdbcTemplate.update("UPDATE Book SET person_id=? WHERE book_id=?", selectedPerson.getId(), id);
+    }
 }

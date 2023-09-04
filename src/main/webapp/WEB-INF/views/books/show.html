@@ -9,22 +9,22 @@
 <p th:text="${book.getId()}">VALUE</p>
 <br/>
 
-<a th:href="@{/people/{id}(id=${owner.getId()})}"
-   th:text="${owner.getFullName() + ', ' + owner.getYearOfBirth()}">user</a>
-<br/>
-
 <div th:if="${owner}">
     <span>Книга сейчас у : </span> <span th:text="${owner.getFullName() + ', ' + owner.getYearOfBirth()}"></span>
+    <form th:method="PATCH" th:action="@{/books/{id}/release(id=${book.getId()})}">
+        <input type="submit" value="Освободить книгу"/>
+    </form>
 </div>
 
 <div th:if="${people}">
     <span>Книга свободна. Кому наначить ее? : </span>
-    <form th:method="PATCH" th:action="${books/{id}/assign(id=${book.getId()})}">
+    <form th:method="PATCH" th:action="@{/books/{id}/assign(id=${book.getId()})}">
         <label for="person">Выберите книгу</label>
         <select th:object="${person}" th:field="*{id}" id="person">
-            <option th:each="person : ${people}" th:value="${person.getId()}"
-                    th:text="${person.getFullName()}"></option>
+            <option th:each="person : ${people}" th:value="${person.getId()}" th:text="${person.getFullName()}">
+            </option>
         </select>
+        <input type="submit" value="Назначить книгу"/>
     </form>
 </div>
 

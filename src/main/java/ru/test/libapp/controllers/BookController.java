@@ -36,14 +36,15 @@ public class BookController {
 
     @GetMapping("/{id}")
     public String show(@PathVariable("id")int id, Model model) {
+
         model.addAttribute("book", bookDAO.show(id));
 
         Optional<Person> bookOwner = bookDAO.getBookOwner(id);
+
         if (bookOwner.isPresent())
             model.addAttribute("owner", bookOwner.get());
         else
             model.addAttribute("people", personDAO.index());
-
 
         return "books/show";
     }
@@ -86,6 +87,18 @@ public class BookController {
     public String delete(@PathVariable("id") int id) {
         bookDAO.deleteBook(id);
         return "redirect:/books";
+    }
+
+    @PatchMapping("/{id}/release")
+    public String release(@PathVariable("id") int id) {
+        bookDAO.release(id);
+        return "redirect:/books/" + id;
+    }
+
+    @PatchMapping("/{id}/assign")
+    public String assign(@PathVariable("id") int id, @ModelAttribute("person") Person selectedPerson) {
+        bookDAO.assign(id, selectedPerson);
+        return "redirect:/books/" + id;
     }
 }
 
