@@ -91,8 +91,11 @@ public class BookDAO {
 
         Book book = session.get(Book.class, id);
 
-        book.setOwner(selectedPerson);
+        Person person = session.get(Person.class, selectedPerson.getId());
 
-        selectedPerson.getBookList().add(book);
+        person.getBookList().add(book);
+
+        book.setOwner(person);
+
     }
 }
