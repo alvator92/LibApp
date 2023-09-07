@@ -1,20 +1,32 @@
 package ru.test.libapp.models;
 
+import javax.persistence.*;
 import javax.validation.constraints.*;
+import java.util.List;
 
+@Entity
+@Table(name = "Person" +
+        "")
 public class Person {
 
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @NotEmpty(message = "Поле не может быть пустым")
-    @Size(min = 2, max = 100, message = "Некорректная длина имени")
+    @Column(name = "name")
+    @NotEmpty(message = "Name should not be Empty")
+    @Size(min = 2, max = 30, message = "Name should be beetween 2 to 30 characters")
     private String fullName;
 
-    @Min(value = 0, message = "Возраст не может быть меньше 1")
+    @Column(name = "age")
+    @Min(value = 0, message = "Age should be greater than 0")
     private int yearOfBirth;
 
-    public Person(int id, String name, int age) {
-        this.id = id;
+    @OneToMany(mappedBy = "owner",fetch = FetchType.LAZY)
+    private List<Book> bookList;
+
+    public Person(String name, int age) {
         this.fullName = name;
         this.yearOfBirth = age;
     }
@@ -43,5 +55,13 @@ public class Person {
 
     public void setYearOfBirth(int yearOfBirth) {
         this.yearOfBirth = yearOfBirth;
+    }
+
+    public List<Book> getBookList() {
+        return bookList;
+    }
+
+    public void setBookList(List<Book> bookList) {
+        this.bookList = bookList;
     }
 }
