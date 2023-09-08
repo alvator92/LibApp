@@ -8,6 +8,7 @@ import ru.test.libapp.models.Book;
 import ru.test.libapp.models.Person;
 import ru.test.libapp.repositories.PeopleRepository;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,6 +40,7 @@ public class PeopleService {
 
     @Transactional
     public void save(Person person) {
+        person.setCreatedAt(new Date());
         peopleRepository.save(person);
     }
 
