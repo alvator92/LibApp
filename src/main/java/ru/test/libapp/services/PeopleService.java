@@ -1,5 +1,6 @@
 package ru.test.libapp.services;
 
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +31,12 @@ public class PeopleService {
         return person.orElse(null);
     }
 
+    public Person findOneWithList(int id) {
+        Optional<Person> person = peopleRepository.findById(id);
+        Hibernate.initialize(person.get().getBookList());
+        return person.orElse(null);
+    }
+
     @Transactional
     public void save(Person person) {
         peopleRepository.save(person);
@@ -47,9 +54,15 @@ public class PeopleService {
     }
 
     @Transactional
-    public void removeBookFromPerson(Book book) {
-        Person owner = peopleRepository.findByBookList(book);
-        owner.getBookList().remove(book);
-        book.setOwner(null);
+    public Person findPersonByBookList(Book book) {
+        return peopleRepository.findByBookList(book);
+
+
     }
+
+//    @Transactional
+//    public void assignBookToPerson(Book book, Person person) {
+//        person.getBookList().add(book);
+//        save(person);
+//    }
 }

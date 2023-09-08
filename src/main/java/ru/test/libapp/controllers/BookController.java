@@ -1,5 +1,6 @@
 package ru.test.libapp.controllers;
 
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -52,7 +53,7 @@ public class BookController {
         if (bookOwner.isPresent())
             model.addAttribute("owner", bookOwner.get());
         else
-            model.addAttribute("people", bookService.findAll());
+            model.addAttribute("people", peopleService.findAll());
 
         return "books/show";
     }
@@ -99,21 +100,21 @@ public class BookController {
 
     @PatchMapping("/{id}/release")
     public String release(@PathVariable("id") int id) {
-//        bookDAO.release(id);
         Book book = bookService.findOne(id);
-        peopleService.removeBookFromPerson(book);
-//        owner.getBookList().remove(book);
-//        book.setOwner(null);
+        book.setOwner(null);
+        bookService.update(id, book);
+//        Person person = peopleService.findPersonByBookList(book);
+
         return "redirect:/books/" + id;
     }
 
     @PostMapping("/{id}/assign")
     public String assign(@PathVariable("id") int id, @ModelAttribute("person") Person selectedPerson) {
-//        bookDAO.assign(id, selectedPerson);
         Book book = bookService.findOne(id);
-        Person person = peopleService.findOne(selectedPerson.getId());
-        person.getBookList().add(book);
+        Person person = peopleService.findOneWithList(selectedPerson.getId());
         book.setOwner(person);
+        bookService.update(id, book);
+
         return "redirect:/books/" + id;
     }
 }
