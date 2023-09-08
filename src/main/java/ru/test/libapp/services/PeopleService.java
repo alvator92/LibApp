@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.test.libapp.models.Book;
+import ru.test.libapp.models.Mood;
 import ru.test.libapp.models.Person;
 import ru.test.libapp.repositories.PeopleRepository;
 
@@ -41,6 +42,7 @@ public class PeopleService {
     @Transactional
     public void save(Person person) {
         person.setCreatedAt(new Date());
+        person.setMood(Mood.CALM);
         peopleRepository.save(person);
     }
 
