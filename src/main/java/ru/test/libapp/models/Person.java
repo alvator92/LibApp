@@ -35,7 +35,7 @@ public class Person {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
 
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     private Mood mood;
 
     @OneToMany(mappedBy = "owner",fetch = FetchType.LAZY)
