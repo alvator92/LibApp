@@ -37,7 +37,9 @@ public class BookController {
 
     @GetMapping()
     public String index(Model model) {
-        model.addAttribute("books", bookService.findAll());
+//        model.addAttribute("books", bookService.findAll());
+        personDAO.test();
+
         return "books/index";
     }
 

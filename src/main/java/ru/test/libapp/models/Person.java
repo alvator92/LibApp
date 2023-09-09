@@ -6,6 +6,7 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "Person" +
@@ -102,5 +103,22 @@ public class Person {
 
     public void setMood(Mood mood) {
         this.mood = mood;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Person that = (Person) o;
+        return Objects.equals(this.fullName, that.fullName) &&
+                Objects.equals(this.dateOfBirth, that.dateOfBirth) &&
+                Objects.equals(this.createdAt, that.createdAt) &&
+                this.mood == that.mood &&
+                this.bookList.equals(that.bookList);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(fullName, yearOfBirth, dateOfBirth, createdAt, bookList);
     }
 }

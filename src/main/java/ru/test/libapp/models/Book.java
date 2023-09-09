@@ -14,7 +14,7 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "book")
+    @Column(name = "title")
     @NotEmpty(message = "У книги должно быть название")
     @Size(min = 2, max = 100, message = "Название должно быть в пределах от 2 до 100 символов")
     private String title;
@@ -95,6 +95,12 @@ public class Book {
     @Override
     public int hashCode() {
         return Objects.hash(title, author, age, owner);
+    }
+
+    @Override
+    public String toString() {
+        return "Book = {" +
+                title + ", " + author + ", " + age + "}";
     }
 }
 
