@@ -61,7 +61,6 @@ public class PeopleService {
     public Person findPersonByBookList(Book book) {
         return peopleRepository.findByBookList(book);
 
-
     }
 
 //    @Transactional

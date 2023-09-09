@@ -72,7 +72,7 @@ public class PersonDAO {
 
     @Transactional
     public List<Book> getBooksByPersonId(int id) {
-        Session session = entityManager.unwrap(Session.class);;
+        Session session = entityManager.unwrap(Session.class);
 
         Person person = session.get(Person.class, id);
 
@@ -80,6 +80,23 @@ public class PersonDAO {
 
         return person.getBookList();
 
+    }
+
+    @Transactional(readOnly = true)
+    public Person getPersonByIdLazyLoad(int id) {
+        Session session = entityManager.unwrap(Session.class);
+
+        // создаем новый обект - ему надо назначить владельца
+        Book book = new Book();
+
+        // нам нужен этот объект только для выстраивания новых связей
+        // значения полей этого человека не нужны
+        Person person = session.load(Person.class, id);
+
+        // в колонку внешнего ключа будет положено значние Id текущего человека
+        // то что человек существует будет проверять БД.
+        book.setOwner(person);
+        return person;
     }
 
     @Transactional(readOnly = true)
