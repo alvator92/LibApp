@@ -1,12 +1,16 @@
 package ru.test.libapp.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.test.libapp.models.Book;
 import ru.test.libapp.models.Person;
 import ru.test.libapp.repositories.BooksRepository;
 
+import java.awt.print.Pageable;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,6 +39,22 @@ public class BookService {
 
     public List<Book> findAll() {
         return booksRepository.findAll();
+    }
+
+    public Page<Book> findAll(Pageable pageable) {
+        return booksRepository.findAll((org.springframework.data.domain.Pageable) pageable);
+    }
+
+    public Page<Book> findAllWithPagination(int page, int booksPerPage) {
+        return booksRepository.findAll(PageRequest.of(page, booksPerPage));
+    }
+
+    public List<Book> findAllOrderByAge() {
+        return booksRepository.findAll(Sort.by("age"));
+    }
+
+    public Page<Book> findAllWithPaginationOrderByAge(int page, int booksPerPage) {
+        return booksRepository.findAll(PageRequest.of(page, booksPerPage, Sort.by("age")));
     }
 
     public Book findOne(int id) {

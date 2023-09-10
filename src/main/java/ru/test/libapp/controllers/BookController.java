@@ -2,6 +2,9 @@ package ru.test.libapp.controllers;
 
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,7 +16,10 @@ import ru.test.libapp.models.Person;
 import ru.test.libapp.services.BookService;
 import ru.test.libapp.services.PeopleService;
 
+
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -36,11 +42,26 @@ public class BookController {
     }
 
     @GetMapping()
-    public String index(Model model) {
-//        model.addAttribute("books", bookService.findAll());
-        personDAO.test();
+    public String index(
+            Model model,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "3") int books_per_page,
+            @RequestParam(defaultValue = "false") boolean sort_by_year) {
 
-        return "books/index";
+        Page<Book> books = null;
+
+        if (sort_by_year) {
+            books = bookService.findAllWithPaginationOrderByAge(page, books_per_page);
+        }
+        else {
+            books = bookService.findAllWithPagination(page, books_per_page);
+        }
+
+        books.getContent();
+        model.addAttribute("books", books);
+        model.addAttribute("sort", sort_by_year);
+
+        return "/books/index";
     }
 
     @GetMapping("/{id}")
