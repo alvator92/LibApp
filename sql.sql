@@ -15,7 +15,7 @@ create table book (
 )
 
 insert into Item(person_id, item_name) values (5, 'PLAYSTATION');
-insert into book (person_id, title, author, age) values (3, 'book6', 'author7', 1993);
+insert into book (person_id, title, author, age) values (3, 'book34', 'author23', 1899);
 
 select * from item;
 

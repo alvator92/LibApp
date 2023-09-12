@@ -4,6 +4,8 @@ import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Objects;
 
 @Entity
@@ -27,6 +29,13 @@ public class Book {
     @Column(name = "age")
     @Min(value = 1500)
     private int age;
+
+    @Column(name = "date_of_rent")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateOfRent;
+
+    @Transient
+    private boolean expired;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "person_id", referencedColumnName = "id")
@@ -79,6 +88,30 @@ public class Book {
 
     public void setOwner(Person owner) {
         this.owner = owner;
+    }
+
+    public Date getDateOfRent() {
+        return dateOfRent;
+    }
+
+    public void setDateOfRent(Date dateOfRent) {
+        this.dateOfRent = dateOfRent;
+    }
+
+    public boolean isExpired() {
+        Calendar calendar = Calendar.getInstance();
+        if (this.getDateOfRent() == null)
+            return false;
+        calendar.setTimeInMillis(getDateOfRent().getTime());
+        // 10 minutes expiration time
+        calendar.add(calendar.MINUTE, 10);
+        if (calendar.getTime().compareTo(new Date()) > 0 )
+            return false;
+        return true;
+    }
+
+    public void setExpired(boolean expired) {
+        this.expired = expired;
     }
 
     @Override

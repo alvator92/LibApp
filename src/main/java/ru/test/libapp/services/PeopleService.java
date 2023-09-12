@@ -48,6 +48,7 @@ public class PeopleService {
 
     @Transactional
     public void update(int id, Person personToBeUpdate) {
+        personToBeUpdate.setCreatedAt(new Date());
         personToBeUpdate.setId(id);
         peopleRepository.save(personToBeUpdate);
     }

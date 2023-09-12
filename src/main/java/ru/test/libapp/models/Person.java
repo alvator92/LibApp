@@ -4,6 +4,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -38,6 +39,9 @@ public class Person {
 
     @Enumerated(EnumType.STRING)
     private Mood mood;
+
+    @Transient
+    private boolean expired;
 
     @OneToMany(mappedBy = "owner",fetch = FetchType.LAZY)
     private List<Book> bookList;
@@ -103,6 +107,22 @@ public class Person {
 
     public void setMood(Mood mood) {
         this.mood = mood;
+    }
+
+    public boolean isExpired() {
+        Calendar calendar = Calendar.getInstance();
+        if (this.getCreatedAt() == null)
+            return false;
+        calendar.setTimeInMillis(getCreatedAt().getTime());
+        // 10 minutes expiration time
+        calendar.add(calendar.MINUTE, 10);
+        if (calendar.getTime().compareTo(new Date()) > 0 )
+            return false;
+        return true;
+    }
+
+    public void setExpired(boolean expired) {
+        this.expired = expired;
     }
 
     @Override

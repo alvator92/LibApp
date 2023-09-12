@@ -19,6 +19,7 @@ import ru.test.libapp.services.PeopleService;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,8 +48,8 @@ public class BookController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "3") int books_per_page,
             @RequestParam(defaultValue = "false") boolean sort_by_year) {
-
         Page<Book> books = null;
+
 
         if (sort_by_year) {
             books = bookService.findAllWithPaginationOrderByAge(page, books_per_page);
@@ -73,8 +74,11 @@ public class BookController {
         Book book = bookService.findOne(id);
         Optional<Person> bookOwner = Optional.ofNullable(book.getOwner());
 
-        if (bookOwner.isPresent())
-            model.addAttribute("owner", bookOwner.get());
+        if (bookOwner.isPresent()) {
+            // проверка просрочки книги
+            Person person = bookOwner.get();
+            model.addAttribute("owner", person);
+        }
         else
             model.addAttribute("people", peopleService.findAll());
 
@@ -135,10 +139,32 @@ public class BookController {
     public String assign(@PathVariable("id") int id, @ModelAttribute("person") Person selectedPerson) {
         Book book = bookService.findOne(id);
         Person person = peopleService.findOneWithList(selectedPerson.getId());
+        person.setCreatedAt(new Date());
         book.setOwner(person);
+        book.setDateOfRent(new Date());
         bookService.update(id, book);
 
         return "redirect:/books/" + id;
+    }
+
+    @GetMapping("/search")
+    public String search(Model model,
+                         @RequestParam(defaultValue = "null") String keyword) {
+
+        List<Book> books = null;
+
+        if (keyword.equals("null"))
+            return "books/search";
+
+        else {
+            books = bookService.findByTitleStartingWith(keyword);
+            if (!books.isEmpty())
+                model.addAttribute("books", books);
+            else
+                model.addAttribute("booksNotFound", "Книга не найдена");
+        }
+
+        return "books/search";
     }
 }
 
